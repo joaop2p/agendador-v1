@@ -1,8 +1,9 @@
 import flet as ft
 from Lib.app.app import App
+from Lib.src.queue.queue_func import Queue
 
 
-class Main:
+class Main():
     app: App
     
     def __init__(self):
