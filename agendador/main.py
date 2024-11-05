@@ -1,7 +1,5 @@
 import flet as ft
 from Lib.app.app import App
-from Lib.src.queue.queue_func import Queue
-
 
 class Main():
     app: App
@@ -13,7 +11,7 @@ class Main():
         """ 
         Inicia a parte gráfica do programa
         """
-        ft.app(self.app.run)
+        ft.app(self.app.run, assets_dir="./")
         
 if __name__ == "__main__":
     main = Main()

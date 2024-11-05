@@ -2,26 +2,22 @@ import os
 import random
 from typing import Literal
 import flet as ft
-
-from ..widgets.widgets import animate_buttom, buttom_Action
-
-from .page import AbcPage
+from ..widgets.widgets import animate_button, button_Action
+from .page_model import AbcPage
 
 class Home(AbcPage):
-    page: ft.Page
-    labels: list
+    label: str
     
     def __init__(self):
         self.page = None
-        self.labels = [
-            "O que faremos hoje? Escolha uma das opções abaixo",
-            "Vamos começar! Selecione uma das operações disponíveis.", 
-            "Pronto para agir? Escolha uma das opções e vamos lá!",
-            "Qual será a sua escolha hoje? Selecione uma das operações.",
-            "Vamos realizar algo incrível! Escolha uma das opções abaixo."
-            ]
         # Escolhendo a frase aqui para não gerar outra ao modificar a resolução
-        self.label = random.choice(self.labels)
+        self.label = random.choice([
+            "O que faremos hoje? Escolha uma das opções abaixo:",
+            "Vamos começar! Selecione uma das operações disponíveis:", 
+            "Pronto para agir? Escolha uma das opções e vamos lá!",
+            "Qual será a sua escolha hoje? Selecione uma das operações:",
+            "Vamos realizar algo incrível! Escolha uma das opções abaixo:"
+            ])
 
     def __str__(self) -> Literal['/home']:
         return "/home"
@@ -31,8 +27,26 @@ class Home(AbcPage):
         self.page = page 
 
     def get_page(self) -> ft.View:
-        turn_off_buttom = buttom_Action(self.page.window.width, self.page.window.height)
-        turn_off_buttom.on_click = lambda e: animate_buttom(turn_off_buttom)
+        # Carregando o botão de desligamento
+        turn_off_button = button_Action(
+            page_width=self.page.window.width,
+            page_height=self.page.window.height,
+            icon= "assets/icons/power-switch.png",
+            text_value="Agendar desligamento",
+            color="#A33131"
+            )
+        turn_off_button.on_click = lambda e: self.page.go("/schedule")
+        turn_off_button.on_hover = lambda e: animate_button(e, turn_off_button)
+        # Carregando botão de reinicialização
+        restart_button = button_Action(
+            page_width=self.page.window.width,
+            page_height=self.page.window.height,
+            icon= "assets/icons/restart.png",
+            text_value="Agendar reinicialização",
+            color="#C4803B"
+            )
+        restart_button.on_click = lambda e: print(True)
+        restart_button.on_hover = lambda e: animate_button(e, restart_button)
         # Retorna a visualização de uma nova tela
         return ft.View(
             route=self,
@@ -106,10 +120,18 @@ class Home(AbcPage):
                                     content=ft.Container(
                                         width=0.87 * self.page.window.width,
                                         height= 0.31 * self.page.window.height,
+                                        bgcolor= "#363636",
                                         content=ft.Row(
+                                            alignment=ft.MainAxisAlignment.CENTER,
                                             controls=[
-                                                turn_off_buttom
-                                                ]
+                                                turn_off_button,
+                                                # Adicionando divisor
+                                                ft.Container(
+                                                    width=0.21 * self.page.window.width
+                                                    ),
+                                                restart_button
+                                                ],
+                                            spacing=0
                                             )
                                         )
                                     )

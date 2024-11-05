@@ -1,14 +1,18 @@
+from ..pages.schedule_page import Schedule
 from ..pages.home_page import Home
 from flet import RouteChangeEvent, Page
 
 
-class Controler():
+class Controller():
     pages: dict
     actual_page: object
     
     def __init__(self):
         super().__init__()
-        self.pages = {"/home": Home}
+        self.pages = {
+            "/home": Home,
+            "/schedule": Schedule
+            }
         self.actual_page = None
     
     def startPage(self, page_instance: Page):

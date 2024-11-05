@@ -1,8 +1,9 @@
-from ..src.queue.queue_func import Queue
-from .controlers.controler_pages import Controler
+
+from ..src.queue.queue_func import QUEUE_WORK as qw
+from .controllers.controller_pages import Controller
 from pyautogui import size
 
-class App(Controler, Queue):
+class App(Controller):
     def __init__(self):
         super().__init__()
         
@@ -31,11 +32,15 @@ class App(Controler, Queue):
             self.insert_work(work)
         self.execute()
 
+    def att_page(self):
+        self.page.update()
+
     def run(self, e):
         # Repassando a instancia de page que vem de "ft.app"
         self.startPage(e)
         # Direcionando a página inicial sendo a home
         self.settings()
         # Iniciando fila de tarefas paralelas
-        self.run_queue([self.page.update])
-        self.page.go("/home")
+        qw.insert_work(self.page.update)
+        qw.execute()
+        self.page.go("/schedule")
